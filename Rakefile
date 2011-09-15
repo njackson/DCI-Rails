@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "dci-rails"
   gem.homepage = "http://github.com/njackson/dci-rails"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "DCI helpers for Rails"
+  gem.description = "helpers for rails to implement DCI pattern (http://andrzejonsoftware.blogspot.com/2011/02/dci-and-rails.html)"
   gem.email = "nate.d.jackson@gmail.com"
   gem.authors = ["Nate Jackson"]
   # dependencies defined in Gemfile
