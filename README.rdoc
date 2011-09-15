@@ -1,6 +1,30 @@
 = dci-rails
 
-Description goes here.
+== Usage:
+app/controllers/application_controller.rb
+  class ApplicationController < ActionController::Base
+    include DCI::Controller::DSL
+    ...
+  end
+
+app/controllers/comments_controller.rb
+  class CommentsController < ApplicationController
+    inherited_resources
+    extend_resource :build_resource, CustomCallbackRole
+  end
+
+app/roles/custom_callback_role.rb
+  module CustomCallbackRole
+    include DCI::Role
+    
+    extended_metaclass_eval do
+      after_create :custom_callback
+    end
+
+    def custom_callback
+      ...
+    end
+  end
 
 == Contributing to dci-rails
  
