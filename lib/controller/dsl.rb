@@ -9,14 +9,13 @@ module DCI
         def extend_resource(resource_method, *extensions)
           class_eval do
             extensions.each do |extension|
-              alias_method :"#{resource_method}_without_#{extension}", resource_method
-              define_method(resource_method) do
+              define_method("#{resource_method}_with_#{extension}") do
                 send("#{resource_method}_without_#{extension}").tap do |obj|
-                  extensions.each do |extension|
-                    obj.extend(extension)
-                  end
+                  obj.extend(extension)
                 end
               end
+              alias_method "#{resource_method}_without_#{extension}", resource_method
+              alias_method resource_method, "#{resource_method}_with_#{extension}"
             end
           end
         end
