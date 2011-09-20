@@ -32,6 +32,33 @@ describe "DCI::Controller::DSL" do
         controller.resource.should respond_to(:extended_with_TestExtension2)
         controller.resource.should respond_to(:extended_with_TestExtension3)
       end
+
+      it "passes arguments through to the original resource method" do
+        resource_args = ["arg1", "arg2"]
+
+        controller.stub(:resource) do |*args|
+          args.should == resource_args
+          resource
+        end
+
+        (class << controller; self; end).instance_eval do
+          extend_resource :resource, TestExtension1
+        end
+
+        controller.resource(*resource_args).should respond_to(:extended_with_TestExtension1)
+      end
+
+      it "only extends the resource once" do
+        controller.resource = resource
+
+        resource.should_receive(:extend).once
+
+        (class << controller; self; end).instance_eval do
+          extend_resource :resource, TestExtension1
+        end
+
+        5.times { controller.resource }
+      end
     end
   end
 end
