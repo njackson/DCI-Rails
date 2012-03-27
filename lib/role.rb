@@ -5,11 +5,20 @@ module DCI
     end
 
     module ModuleMethods
-      def extended_metaclass_eval(&block)
-        (class << self; self; end).instance_eval do
+      def extended_singleton_class_eval(&block)
+        singleton_class_for(self).instance_eval do
           define_method("extended") do |obj|
-            (class << obj; self; end).instance_eval(&block)
+            singleton_class_for(obj).instance_eval(&block)
           end
+        end
+      end
+
+      private
+      def singleton_class_for(obj)
+        if obj.respond_to?(:singleton_class)
+          obj.singleton_class
+        else
+          class << obj; self; end
         end
       end
     end
